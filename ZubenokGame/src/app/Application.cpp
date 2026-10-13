@@ -13,6 +13,9 @@
 #include <SFML/Window/Keyboard.hpp>
 #include <SFML/Window/VideoMode.hpp>
 
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
+
 #include <filesystem>
 #include <string>
 
@@ -114,6 +117,15 @@ namespace zubrenok
 			const float deltaTime = clock.restart().asSeconds();
 			animationTime += deltaTime;
 
+			sf::SoundBuffer bonusBuffer;
+			if (!bonusBuffer.loadFromFile("assets/audio/bonus.wav"))
+			{
+				throw std::runtime_error("Failed to load assets/audio/bonus.wav");
+			}
+
+			sf::Sound bonusSound(bonusBuffer);
+			bonusSound.setVolume(10.0f);
+
 			if (state == GameState::Playing)
 			{
 				const CollectibleType collected =
@@ -126,6 +138,7 @@ namespace zubrenok
 				else if (collected == CollectibleType::Acorn)
 				{
 					score += config::acornScore;
+					bonusSound.play();
 				}
 
 				if (level.getRemainingCollectibles() <= 0)

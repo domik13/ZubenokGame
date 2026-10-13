@@ -56,6 +56,14 @@ namespace zubrenok
 		);
 
 		speed_ = config::playerSpeed;
+
+		if (!footstepBuffer_.loadFromFile("assets/audio/zubr-step.wav")) {
+			throw std::runtime_error(
+				"Failed to load assets/audio/zubr-step.wav"
+			);
+		}
+
+		footstepSound_.setVolume(10.0f);
 	}
 
 	void Player::setPosition(sf::Vector2f position)
@@ -134,6 +142,20 @@ namespace zubrenok
 			}
 
 			sprite_.setPosition(next);
+		}
+
+		if (moved)
+		{
+			footStepTimer_ += deltaTime;
+
+			if (footStepTimer_ >= footstepInterval_)
+			{
+				footStepTimer_ = 0.0f;
+				footstepSound_.play();
+			}
+		}
+		else {
+			footStepTimer_ = footstepInterval_;
 		}
 
 		updateAnimation(deltaTime, moved);

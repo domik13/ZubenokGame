@@ -71,12 +71,6 @@ namespace zubrenok
 		) const;
 
 	private:
-		struct Decoration
-		{
-			TilePosition tile;
-			int presetColumn = 0;
-		};
-
 		std::vector<std::string> tiles_;
 
 		TilePosition playerSpawn_;
@@ -86,10 +80,8 @@ namespace zubrenok
 
 		sf::Texture presetsTexture_;
 		mutable sf::Sprite presetsSprite_{ presetsTexture_ };
-		std::vector<Decoration> trees_;
 
 		void loadPresets();
-		void drawTree(sf::RenderTarget& target, const Decoration& tree) const;
 
 		void loadDefaultMap();
 		void parseMapObjects();

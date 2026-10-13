@@ -55,7 +55,7 @@ add_executable(
 	include/zubrenok/game/GameTypes.h
 	include/zubrenok/game/ContrillersMoves.h
 	include/zubrenok/levels/Level.h
-)
+ "include/zubrenok/entities/Enemy.h")
 
 target_include_directories(
 	ZubrenokGame

@@ -6,6 +6,8 @@
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
+#include <SFML/Audio/Sound.hpp>
+#include <SFML/Audio/SoundBuffer.hpp>
 
 namespace zubrenok
 {
@@ -24,6 +26,12 @@ namespace zubrenok
 		void draw(sf::RenderTarget& target) const;
 
 	private:
+		sf::SoundBuffer footstepBuffer_;
+		sf::Sound footstepSound_{ footstepBuffer_ };
+
+		float footStepTimer_ = 0.0f;
+		static constexpr float footstepInterval_ = 0.28f;
+
 		enum class Facing
 		{
 			Right,

@@ -15,6 +15,7 @@ namespace zubrenok
 
 	constexpr int presetCellW = 160;
 	constexpr int presetCellH = 180;
+	constexpr int treeCount = 12;
 
 	namespace
 	{
@@ -24,8 +25,6 @@ namespace zubrenok
 		constexpr char playerSpawnTile = 'P';
 		constexpr char enemySpawnTile = 'E';
 		constexpr char emptyTile = ' ';
-
-		constexpr float wallPadding = 2.0f;
 	}
 
 	Level::Level()
@@ -38,12 +37,7 @@ namespace zubrenok
 
 		loadPresets();
 
-		trees_.clear();
-
-		trees_.push_back({ {4,2}, 0 });
-		trees_.push_back({ {35,2}, 2 });
-		trees_.push_back({ {10,25}, 1 });
-		trees_.push_back({ {28,25}, 3 });
+		
 
 		parseMapObjects();
 	}
@@ -574,7 +568,8 @@ namespace zubrenok
 
 					++berrySeed;
 				}
-				else if (tile == acornTile) {
+				else if (tile == acornTile)
+				{
 					drawAcorn(
 						target,
 						worldPosition,
@@ -582,11 +577,6 @@ namespace zubrenok
 					);
 				}
 			}
-		}
-
-		for (const Decoration& tree : trees_)
-		{
-			drawTree(target, tree);
 		}
 	}
 
@@ -682,79 +672,36 @@ namespace zubrenok
 		TilePosition position
 	) const
 	{
-		const float tileSize = static_cast<float>(
-			config::tileSize
-			);
+		const int column =
+			(position.x * 31 + position.y * 17) % treeCount;
 
-		const float x = static_cast<float>(
-			position.x * config::tileSize
-			);
-		
-		const float y = static_cast<float>(
-			config::hudHeight + position.y * config::tileSize
-			);
-
-		sf::RectangleShape shadow(
-			{
-				tileSize, tileSize
-			}
-		);
-
-		shadow.setPosition(
-			{
-				x, y
-			}
-		);
-
-		shadow.setFillColor(
-			sf::Color(25, 45, 30)
-		);
-
-		target.draw(shadow);
-
-		sf::RectangleShape wall(
-			{
-				tileSize - wallPadding * 2.0f,
-				tileSize - wallPadding * 2.0f
-			}
-		);
-
-		wall.setPosition(
-			{
-				x + wallPadding,
-				y + wallPadding
-			}
-		);
-
-		wall.setFillColor(
-			sf::Color(
-				55, 100, 60
+		presetsSprite_.setTextureRect(
+			sf::IntRect(
+				{ column * presetCellW, 0 },
+				{ presetCellW, presetCellH }
 			)
 		);
 
-		target.draw(wall);
+		const float scale =
+			static_cast<float>(config::tileSize) / static_cast<float>(presetCellW);
 
-		sf::RectangleShape highlight(
+		presetsSprite_.setScale({ scale, scale });
+		presetsSprite_.setOrigin(
 			{
-				tileSize - 8.0f,
-				4.0f
+				presetCellW * 0.5f,
+				static_cast<float>(presetCellH)
 			}
 		);
 
-		highlight.setPosition(
+		const sf::Vector2f center = tileToWorld(position);
+		presetsSprite_.setPosition(
 			{
-				x + 4.0f,
-				y + 4.0f
+				center.x,
+				center.y + static_cast<float>(config::tileSize) * 0.5f
 			}
 		);
 
-		highlight.setFillColor(
-			sf::Color(
-				80, 135, 80
-			)
-		);
-
-		target.draw(highlight);
+		target.draw(presetsSprite_);
 	}
 
 	void Level::drawBerry(
@@ -911,11 +858,12 @@ namespace zubrenok
 		target.draw(cap);
 	}
 
-	void Level::loadPresets() {
+	void Level::loadPresets()
+	{
 		sf::Image image;
-		if (!image.loadFromFile("assets/level/presets.png"))
+		if (!image.loadFromFile("assets/textures/background.png"))
 		{
-			throw std::runtime_error("Failed to load presets.png");
+			throw std::runtime_error("Failed to load assets/textures/background.png");
 		}
 
 		image.createMaskFromColor(sf::Color::Black);
@@ -927,32 +875,6 @@ namespace zubrenok
 
 		presetsTexture_.setSmooth(false);
 		presetsSprite_.setTexture(presetsTexture_, true);
-	}
-
-	void Level::drawTree(sf::RenderTarget& target, const Decoration& tree) const
-	{
-		presetsSprite_.setTextureRect(sf::IntRect({ tree.presetColumn * presetCellW, 0 },
-			{ presetCellW, presetCellH }));
-
-		const float scale = static_cast<float>(config::tileSize) / static_cast<float>(presetCellW);
-
-		presetsSprite_.setScale({scale, scale});
-		presetsSprite_.setOrigin(
-			{
-				presetCellW * 0.5f,
-				static_cast<float>(presetCellH)
-			}
-		);
-
-		const sf::Vector2f center = tileToWorld(tree.tile);
-		presetsSprite_.setPosition(
-			{
-				center.x,
-				center.y + static_cast<float>(config::tileSize) * 0.5f
-			}
-		);
-
-		target.draw(presetsSprite_);
 	}
 
 }
