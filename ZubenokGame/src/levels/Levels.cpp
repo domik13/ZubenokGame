@@ -151,10 +151,10 @@ namespace zubrenok
 
 		tiles_[20][20] = playerSpawnTile;
 
-		tiles_[13][18] = enemySpawnTile;
-		tiles_[13][19] = enemySpawnTile;
-		tiles_[13][20] = enemySpawnTile;
-		tiles_[13][21] = enemySpawnTile;
+		tiles_[3][3] = enemySpawnTile;
+		tiles_[3][config::mapWidth - 4] = enemySpawnTile;
+		tiles_[config::mapHeight - 4][3] = enemySpawnTile;
+		tiles_[config::mapHeight - 4][config::mapWidth - 4] = enemySpawnTile;
 	}
 
 	void Level::parseMapObjects()

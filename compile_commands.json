@@ -31,6 +31,12 @@
 },
 {
   "directory": "E:/ZubenokGame/out/build/x64-debug",
+  "command": "C:\\PROGRA~1\\MICROS~3\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DSFML_STATIC -DSQLITE_ENABLE_COLUMN_METADATA -IE:\\ZubenokGame\\ZubenokGame\\include -IE:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sqlitecpp-src\\include -IE:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sqlitecpp-src\\sqlite3 -external:IE:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sfml-src\\include -external:W0 /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++17 -MDd -ZI /W4 /permissive- /utf-8 /FoZubenokGame\\CMakeFiles\\ZubrenokGame.dir\\src\\entities\\Enemy.cpp.obj /FdZubenokGame\\CMakeFiles\\ZubrenokGame.dir\\ /FS -c E:\\ZubenokGame\\ZubenokGame\\src\\entities\\Enemy.cpp",
+  "file": "E:\\ZubenokGame\\ZubenokGame\\src\\entities\\Enemy.cpp",
+  "output": "ZubenokGame\\CMakeFiles\\ZubrenokGame.dir\\src\\entities\\Enemy.cpp.obj"
+},
+{
+  "directory": "E:/ZubenokGame/out/build/x64-debug",
   "command": "C:\\PROGRA~1\\MICROS~3\\2022\\COMMUN~1\\VC\\Tools\\MSVC\\1444~1.352\\bin\\Hostx64\\x64\\cl.exe  /nologo /TP -DSFML_STATIC -D_CRT_SECURE_NO_WARNINGS -D_WINSOCK_DEPRECATED_NO_WARNINGS -IE:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sfml-src\\include -IE:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sfml-src\\src /DWIN32 /D_WINDOWS /EHsc /Ob0 /Od /RTC1 -std:c++17 -MDd -ZI /W4 /w14242 /w14254 /w14263 /w14265 /w14287 /we4289 /w14296 /w14311 /w14545 /w14546 /w14547 /w14549 /w14555 /w14619 /w14640 /w14826 /w14905 /w14906 /w14928 /permissive- /wd4068 /wd4505 /wd4800 /wd4275 /Fo_deps\\sfml-build\\src\\SFML\\System\\CMakeFiles\\sfml-system.dir\\Clock.cpp.obj /Fd_deps\\sfml-build\\lib\\sfml-system-s-d.pdb /FS -c E:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sfml-src\\src\\SFML\\System\\Clock.cpp",
   "file": "E:\\ZubenokGame\\out\\build\\x64-debug\\_deps\\sfml-src\\src\\SFML\\System\\Clock.cpp",
   "output": "_deps\\sfml-build\\src\\SFML\\System\\CMakeFiles\\sfml-system.dir\\Clock.cpp.obj"

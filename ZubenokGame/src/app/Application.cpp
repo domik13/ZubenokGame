@@ -1,5 +1,6 @@
 #include "zubrenok/app/Application.h"
 
+#include "zubrenok/entities/Enemy.h"
 #include "zubrenok/entities/Player.h"
 #include "zubrenok/game/GameTypes.h"
 #include "zubrenok/levels/Level.h"
@@ -17,7 +18,9 @@
 #include <SFML/Audio/SoundBuffer.hpp>
 
 #include <filesystem>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
 namespace zubrenok
 {
@@ -75,6 +78,28 @@ namespace zubrenok
 		player.load();
 		player.setPosition(level.tileToWorld(level.getPlayerSpawn()));
 
+		std::vector<Enemy> enemies;
+		const auto spawnEnemies = [&]()
+		{
+			const auto& spawns = level.getEnemySpawns();
+			enemies.clear();
+			enemies.resize(spawns.size());
+			for (std::size_t i = 0; i < spawns.size(); ++i)
+			{
+				enemies[i].load();
+				enemies[i].setPosition(level.tileToWorld(spawns[i]));
+			}
+		};
+		spawnEnemies();
+
+		sf::SoundBuffer bonusBuffer;
+		if (!bonusBuffer.loadFromFile("assets/audio/bonus.wav"))
+		{
+			throw std::runtime_error("Failed to load assets/audio/bonus.wav");
+		}
+		sf::Sound bonusSound(bonusBuffer);
+		bonusSound.setVolume(10.0f);
+
 		int score = 0;
 		GameState state = GameState::Playing;
 
@@ -85,6 +110,7 @@ namespace zubrenok
 		{
 			level.reset();
 			player.setPosition(level.tileToWorld(level.getPlayerSpawn()));
+			spawnEnemies();
 			score = 0;
 			state = GameState::Playing;
 			animationTime = 0.0f;
@@ -117,15 +143,6 @@ namespace zubrenok
 			const float deltaTime = clock.restart().asSeconds();
 			animationTime += deltaTime;
 
-			sf::SoundBuffer bonusBuffer;
-			if (!bonusBuffer.loadFromFile("assets/audio/bonus.wav"))
-			{
-				throw std::runtime_error("Failed to load assets/audio/bonus.wav");
-			}
-
-			sf::Sound bonusSound(bonusBuffer);
-			bonusSound.setVolume(10.0f);
-
 			if (state == GameState::Playing)
 			{
 				const CollectibleType collected =
@@ -139,6 +156,11 @@ namespace zubrenok
 				{
 					score += config::acornScore;
 					bonusSound.play();
+				}
+
+				for (Enemy& enemy : enemies)
+				{
+					enemy.update(deltaTime, level);
 				}
 
 				if (level.getRemainingCollectibles() <= 0)
@@ -161,6 +183,10 @@ namespace zubrenok
 
 			level.draw(window, animationTime);
 			player.draw(window);
+			for (const Enemy& enemy : enemies)
+			{
+				enemy.draw(window);
+			}
 
 			if (hasFont)
 			{

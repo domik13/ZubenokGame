@@ -7,10 +7,12 @@
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/System/Vector2.hpp>
 
-namespace zubrenok {
-	class Level1;
+namespace zubrenok
+{
+	class Level;
 
-	class Enemy {
+	class Enemy
+	{
 	public:
 		Enemy();
 
@@ -18,7 +20,7 @@ namespace zubrenok {
 		void setPosition(sf::Vector2f position);
 		sf::Vector2f getPosition() const;
 
-		void update(float deltatime, Level1& level);
+		void update(float deltaTime, Level& level);
 		void draw(sf::RenderTarget& target) const;
 
 	private:
@@ -30,7 +32,9 @@ namespace zubrenok {
 			Down
 		};
 
-		void pickNewDirection(Level1& level);
+		static Facing directionToFacing(Direction direction);
+
+		void pickNewDirection(Level& level);
 		void updateAnimation(float deltaTime, bool moving);
 		void updateSpriteFrame();
 
@@ -42,15 +46,15 @@ namespace zubrenok {
 
 		int animationFrame_ = 1;
 
-		float speed_ = 122.0f;
+		float speed_ = 112.0f;
 		float animationTimer_ = 0.0f;
+		float animationFrameTime_ = 0.12f;
 		float rethinkTimer_ = 0.0f;
 
 		static constexpr int frameWidth_ = 130;
 		static constexpr int frameHeight_ = 95;
-		static constexpr int framePerDirection_ = 3;
+		static constexpr int framesPerDirection_ = 3;
 		static constexpr float spriteScale_ = 0.55f;
 		static constexpr float collisionRadius_ = 10.0f;
-
 	};
 }
